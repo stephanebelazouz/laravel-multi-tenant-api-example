@@ -1,17 +1,21 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "actisync/laravel-multi-tenant-api-example",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A skeleton application for multi-tenant API with Laravel.",
     "keywords": [
         "laravel",
-        "framework"
+        "multi-tenant",
+        "api"
     ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^2.10.1",
+        "lorisleiva/laravel-actions": "^2.9",
+        "stancl/tenancy": "^3.9"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

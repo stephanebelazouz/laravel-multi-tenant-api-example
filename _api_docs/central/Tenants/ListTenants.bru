@@ -1,0 +1,21 @@
+meta {
+  name: ListTenants
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{api_url}}/tenants
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+}

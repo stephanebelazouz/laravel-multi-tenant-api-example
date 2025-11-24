@@ -1,0 +1,16 @@
+meta {
+  name: tenant
+  seq: 2
+}
+
+headers {
+  X-Tenant: {{current_tenant_id}}
+}
+
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{tenant_user_token}}
+}
