@@ -1,0 +1,93 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{api_url}}/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "email": "{{central_admin_email}}",
+    "password": "{{central_admin_password}}"
+  }
+}
+
+script:post-response {
+  if (res.status === 200 && res.body.token) {
+    bru.setEnvVar("central_user_token", res.body.token);
+    console.log("Central Token saved:", res.body.token);
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Response has token", function() {
+    expect(res.body.token).to.be.a('string');
+  });
+  
+  test("Response has user", function() {
+    expect(res.body.user).to.be.an('object');
+  });
+}
+
+example {
+  name: Login as admin
+  
+  request: {
+    url: {{api_url}}/auth/login
+    method: POST
+    mode: json
+    headers: {
+      Content-Type: application/json
+      Accept: application/json
+    }
+  
+    body:json: {
+      {
+        "email": "{{central_admin_email}}",
+        "password": "{{central_admin_password}}"
+      }
+    }
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+        {
+          "message": "Login successful",
+          "user": {
+            "id": "019abb76-b503-706c-9df7-62143acd3360",
+            "firstname": "Super",
+            "lastname": "Admin",
+            "email": "administrator@local.dev",
+            "email_verified_at": null,
+            "role": "central_admin",
+            "created_at": "2025-11-25T14:41:50.000000Z",
+            "updated_at": "2025-11-25T14:41:50.000000Z"
+          },
+          "token": "1|5WeHCQVlLxFwhyOXr9Du2XpKUFGcMQQH0N4QRlAof245e752",
+          "token_type": "Bearer"
+        }
+      '''
+    }
+  }
+}

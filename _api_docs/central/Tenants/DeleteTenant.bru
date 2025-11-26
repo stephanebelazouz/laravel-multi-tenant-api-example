@@ -1,0 +1,29 @@
+meta {
+  name: DeleteTenant
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{api_url}}/tenants/{{tenant_id}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  : 
+}
+
+headers {
+  Accept: application/json
+}
+
+vars:pre-request {
+  tenant_id: 9de68835-c96e-40e8-95bd-288fcc553984
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+}

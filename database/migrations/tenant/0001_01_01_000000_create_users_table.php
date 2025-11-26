@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('central_user');
+            $table->string('role')->default('tenant_user');
             $table->rememberToken();
             $table->timestamps();
             $table->index('role');
@@ -31,7 +31,7 @@ return new class extends Migration {
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->foreignUuid('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();

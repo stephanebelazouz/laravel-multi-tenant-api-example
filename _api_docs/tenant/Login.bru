@@ -1,0 +1,42 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{api_url}}/tenant/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+  X-Tenant: {{current_tenant_id}}
+}
+
+body:json {
+  {
+    "email": "{{tenant_admin_email}}",
+    "password": "{{tenant_admin_password}}"
+  }
+}
+
+vars:pre-request {
+  current_tenant_id: 7ff51dbb-1a35-4241-a22f-8f0097c2b8ef
+}
+
+script:post-response {
+  if (res.status === 200 && res.body.token) {
+    bru.setEnvVar("tenant_user_token", res.body.token);
+    bru.setEnvVar("current_tenant_id", res.body.tenant_id);
+    console.log("Tenant User Token saved:", res.body.token);
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+}

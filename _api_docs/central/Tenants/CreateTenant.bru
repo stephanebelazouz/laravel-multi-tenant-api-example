@@ -1,0 +1,47 @@
+meta {
+  name: CreateTenant
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{api_url}}/tenants
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": "{{tenant_name}}",
+    "admin_email": "{{admin_email}}",
+    "admin_password": "{{admin_password}}"
+  }
+}
+
+vars:pre-request {
+  tenant_name: AcmeCorps
+  admin_email: {{tenant_admin_email}}
+  admin_password: {{tenant_admin_password}}
+}
+
+vars:post-response {
+  : 
+}
+
+script:post-response {
+  if (res.status === 201 && res.body.tenant.id) {
+    bru.setEnvVar("tenant_id", res.body.tenant.id);
+    console.log("Tenant Id saved:", res.body.tenant.id);
+  }
+}
+
+tests {
+  test("Status is 201", function() {
+    expect(res.status).to.equal(201);
+  });
+}

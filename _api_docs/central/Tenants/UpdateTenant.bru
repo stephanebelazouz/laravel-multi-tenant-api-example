@@ -1,0 +1,29 @@
+meta {
+  name: UpdateTenant
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{api_url}}/tenants/{{tenant_id}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "name": {{tenant_name}},
+    "data": {{tenant_data}}
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+}
